@@ -24,7 +24,8 @@ const CurrentBook = (props) => {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-xs-12 currentAuthor">
+                  <div className="col-xs-12 currentAuthor" onClick={props.searchAuthor} >
+                  WTF?
                     {props.currentBook.author}
                   </div>
                 </div>

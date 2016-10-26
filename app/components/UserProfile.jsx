@@ -5,6 +5,7 @@ const UserBox = require('./UserBox');
 const CurrentBook = require('./CurrentBook');
 const DisplayFriends = require('./DisplayFriends');
 const Carousel = require('./Carousel')
+const AuthorBio = require('./AuthorBio'); // require AuthorBio so I can pass the current book in the queue down as props
 const axios = require('../axios');
 
 class UserProfile extends React.Component {
@@ -44,18 +45,53 @@ class UserProfile extends React.Component {
       });
   }
 
+  searchForAuthor () {
+    console.log('CLICK!!')
+    axios.get(`/authors/search/${this.state.user.queue[0].author}`)
+      .then(response => {
+        console.log("AUTHOR RESPONSE", response)
+        this.setState({
+          authorSearchResults: response.data,
+        })
+      })
+  }
+
+  handleHover () {
+    this.setState ({
+      hover: false
+    })
+  }
+
+//Pass down the current book to the AuthorBio component. From there I should be able to grab the current Author then plug this into
+//A function that makes an API call to goodreads. From there we should receive back author bio and image and I can 
+//render that on a click of the author name.
 
   render () {
+
+    if(this.state.hover) {
     return (
       <div className="container">
         <UserBox
+          increaseBookCount={this.props.increaseBookCount}
+          user={this.state.user} 
+           />
+        <CurrentBook currentBook={this.state.user.queue[0]} searchAuthor={this.searchForAuthor.bind(this)}/>
+        <ProfileQueue bookQueue={this.state.user.queue.slice(1)}/>
+        <DisplayFriends friendQueue={this.state.user.friends}/>
+      </div>
+    );
+
+    } else {
+    return (
+      <div className="container">
+        <UserBox 
           increaseBookCount={this.props.increaseBookCount}
           user={this.state.user} />
         <CurrentBook currentBook={this.state.user.queue[0]}/>
         <ProfileQueue bookQueue={this.state.user.queue.slice(1)} indices={this.props.queueIndices} increaseQueueIndices={this.props.increaseQueueIndices} decreaseQueueIndices={this.props.decreaseQueueIndices}/>
         <ProfileFinished finishedQueue={this.state.user.finished} indices={this.props.finishedIndices} increaseFinishedIndices={this.props.increaseFinishedIndices} decreaseFinishedIndices={this.props.decreaseFinishedIndices}/>
         <DisplayFriends friendQueue={this.state.user.friends}/>
-        <AuthorBio currentAuthor={this.state.user.queue[0]} />
+        <AuthorBio authorSearchResults={this.state.authorSearchResults} /> 
       </div>
     );
   }

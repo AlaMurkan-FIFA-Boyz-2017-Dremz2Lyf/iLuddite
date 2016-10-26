@@ -8,6 +8,7 @@ const request = require('request');
 const xml = require('xml2js').parseString;
 
 router.get('/search/:author', (req, res) => {
+  console.log("AUTHOR SEARCH:", req.params)
   let authorSearched = req.params.author;
   let options = {
     url: `https://www.goodreads.com/api/author_url/${authorSearched}?key=${process.env.goodreads}`
