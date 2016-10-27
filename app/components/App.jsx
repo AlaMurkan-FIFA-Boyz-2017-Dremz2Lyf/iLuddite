@@ -32,8 +32,36 @@ class App extends React.Component {
           });
           const path = `/users/${this.state.loggedInUser.fbid}`;
           browserHistory.push(path);
-        });
-    }
+        })
+        //Here we will get all of the authors info by making a GET request to goodreads API using the author name
+        //that I grabbed from the logged in users queue.
+        .then(function() {
+          console.log("STATE!!!!", self.state.loggedInUser)
+           var authors = self.state.loggedInUser.queue.map(function(books) {
+            // console.log("BOOKES?", books)
+            return books
+          })
+            var arrOfAuthors = authors.map(function(index) { 
+              return axios.get(`/authors/search/${index.author}`)
+            })
+            arrOfAuthors.forEach(function(promiseObj) {
+              promiseObj.then(data => {
+                console.log("Promise obj DATA", data)
+                self.setState({
+                  authorInfo: data
+                })
+              console.log("AUTHOR STATE???", self.state.authorInfo)
+              })
+            })
+            // .then(response => {
+            // console.log("AUTHOR RESPONSE", response)
+            // console.log("CURRENT STATE OF AUTHOR:", self.state.authorInfo)
+            // })
+        })
+        .catch(function(err) {
+          throw err
+        })
+      }
   }
 
   render () {
@@ -68,6 +96,12 @@ class App extends React.Component {
     });
   }
 
+  
+  //Try running the get request for author when this is triggerred. This would be useful if we wanted to show author bio on search for books 
+  //Will need a way to pass in the author name. 
+  //Don't think we want this feature at this time though. Focus on my main task.
+  //Trying to think of what would be the best way to run this with fewest API calls and not overfilling the DB
+
   // uses the navbarSearchText to do an api call and search for a book.
   searchForBook () {
     axios.get(`/books/search/${this.state.navbarSearchText}`)
@@ -77,6 +111,18 @@ class App extends React.Component {
         })
       });
   }
+
+  //Keeping this for now. Thinking I want to just get the author info when a new book is searched and added to the queue
+  //so that it will save it to the database at that point. Then when hovering or clicking on author name it will draw
+  //all the info it needs from the database as opposed to making a whole new get request to the goodreads API
+  // searchForAuthor () {
+  //   axios.get(`/authors/search/${this.state.authorName}`)
+  //     .then(response => {
+  //       this.setState({
+  //         authorSearchResults: response
+  //       })
+  //     })
+  // }
 
   // this function is used in several places throughout the app to dismiss
   // the dropdown from the navbar showing search results.
