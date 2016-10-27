@@ -18,6 +18,7 @@ router.get('/', (req, res, next) => {
 
 //endpoint for navbar search of 3P API by title
 router.get('/search/:searchterm', (req, res) => {
+  // console.log('SEARCH TERM:', req.params)
   let titleSearched = req.params.searchterm;
   let options = {
     url: `https://www.googleapis.com/books/v1/volumes?q=${titleSearched}&key=${process.env.GB_KEY}`,
@@ -30,6 +31,7 @@ router.get('/search/:searchterm', (req, res) => {
       body = body.items.slice(0,5);
       let five = body.map(book => {
         //try to grab the properties we want, otherwise return null
+        // console.log('BOOK INFO!!: ', book)
         try {
           return {
             _id: book.id,
