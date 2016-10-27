@@ -31,7 +31,7 @@ class UserProfile extends React.Component {
           this.setState({
             user: response.data
           });
-          // console.log('STATE of USER: ', this.state.user)
+          console.log('STATE of USER: ', this.state.user)
         }))
         // .then(response => {
         //   return axios.get(`/authors/search/${this.state.user.queue[0].author}`)
