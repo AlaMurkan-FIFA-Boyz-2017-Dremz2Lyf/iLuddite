@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/users');
 const Book = require('../models/books');
+const Author = require('../models/authors');
 const profile = require('../services/profile');
 
 router.get('/:userid', (req, res, next) => {

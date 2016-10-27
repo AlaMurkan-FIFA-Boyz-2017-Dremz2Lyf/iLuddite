@@ -32,35 +32,37 @@ class App extends React.Component {
           });
           const path = `/users/${this.state.loggedInUser.fbid}`;
           browserHistory.push(path);
-        })
+        });
         //Here we will get all of the authors info by making a GET request to goodreads API using the author name
-        //that I grabbed from the logged in users queue.
-        .then(function() {
-          console.log("STATE!!!!", self.state.loggedInUser)
-           var authors = self.state.loggedInUser.queue.map(function(books) {
-            // console.log("BOOKES?", books)
-            return books
-          })
-            var arrOfAuthors = authors.map(function(index) { 
-              return axios.get(`/authors/search/${index.author}`)
-            })
-            arrOfAuthors.forEach(function(promiseObj) {
-              promiseObj.then(data => {
-                console.log("Promise obj DATA", data)
-                self.setState({
-                  authorInfo: data
-                })
-              console.log("AUTHOR STATE???", self.state.authorInfo)
-              })
-            })
-            // .then(response => {
-            // console.log("AUTHOR RESPONSE", response)
-            // console.log("CURRENT STATE OF AUTHOR:", self.state.authorInfo)
-            // })
-        })
-        .catch(function(err) {
-          throw err
-        })
+        //that I grabbed from the logged in users queue. //CHANGING TACTICS THIS IS INEFFICIENT TO RUN EVERYTIME THE PAGE LOADS
+        //MAKE THE API CALL WHEN THE CLICK MAKE CURRENT OR ADD TO QUEUE AND STORE THE INFO IN THE DATABASE. THEN PASS THIS
+        //INFO I GET BACK FROM THE DATABASE DOWN TO MY COMPONENT.
+        // .then(function() {
+        //   console.log("STATE!!!!", self.state.loggedInUser)
+        //    var authors = self.state.loggedInUser.queue.map(function(books) {
+        //     // console.log("BOOKES?", books)
+        //     return books
+        //   })
+        //     var arrOfAuthors = authors.map(function(index) { 
+        //       return axios.get(`/authors/search/${index.author}`)
+        //     })
+        //     arrOfAuthors.forEach(function(promiseObj) {
+        //       promiseObj.then(data => {
+        //         console.log("Promise obj DATA", data)
+        //         self.setState({
+        //           authorInfo: data
+        //         })
+        //       console.log("AUTHOR STATE???", self.state.authorInfo)
+        //       })
+        //     })
+        //     // .then(response => {
+        //     // console.log("AUTHOR RESPONSE", response)
+        //     // console.log("CURRENT STATE OF AUTHOR:", self.state.authorInfo)
+        //     // })
+        // })
+        // .catch(function(err) {
+        //   throw err
+        // })
       }
   }
 
@@ -109,20 +111,22 @@ class App extends React.Component {
         this.setState({
           navbarSearchResults: response.data
         })
+        console.log("Search Results: ", response.data)
       });
   }
 
   //Keeping this for now. Thinking I want to just get the author info when a new book is searched and added to the queue
   //so that it will save it to the database at that point. Then when hovering or clicking on author name it will draw
   //all the info it needs from the database as opposed to making a whole new get request to the goodreads API
-  // searchForAuthor () {
-  //   axios.get(`/authors/search/${this.state.authorName}`)
-  //     .then(response => {
-  //       this.setState({
-  //         authorSearchResults: response
-  //       })
-  //     })
-  // }
+  searchForAuthor (author) {
+    axios.get(`/authors/search/${author}`)
+      .then(response => {
+        this.setState({
+          authorInfo: response
+        })
+        console.log('author state:', this.state.authorInfo)
+      })
+  }
 
   // this function is used in several places throughout the app to dismiss
   // the dropdown from the navbar showing search results.
@@ -163,7 +167,17 @@ class App extends React.Component {
       this.setState({
         loggedInUser: newState
       })
+      var author = response.data.author;
+      return author
     })
+    //Then we run the searchForAuthor function that will send an API request to goodreads with the author name
+    //then insert the author info into the author database. This will also add this author to the state in authorInfo
+    //we can pass this state down to our author bio component and render the info when user clicks on the author name.
+    .then( (author) => {
+      this.searchForAuthor(author)
+    })
+      
+     
   }
 
   addBookToFinished (isbn) {
@@ -243,6 +257,14 @@ removeBookFromFinished (isbn) {
       this.setState({
         loggedInUser: newState
       })
+      var author = book.author;
+      return author;
+    })
+    //Then we run the searchForAuthor function (similar to add to queue) that will send an API request to goodreads with the author name
+    //then insert the author info into the author database. This will also add this author to the state in authorInfo
+    //we can pass this state down to our author bio component and render the info when user clicks on the author name.
+    .then( (author) => {
+      this.searchForAuthor(author)
     })
   }
 
