@@ -221,15 +221,15 @@ router.route('/:userid/authorInfo') //Adding this to get author info in the user
     })
   }) 
 
-router.route('/:userid/authorInfo/:authorid')
+router.route('/:userid/authorInfo/:authorName')
   .post((req, res, next) => {
   // POST to user's author info
     User.findOneAndUpdate({ fbid: req.params.userid },
-      { $push: { finished: req.params.authorid } } )
+      { $push: { authorInfo: req.params.authorName } } )
       .then(user => {
         //send the author back, not the user
         if (user) {
-          Author.findOne({_id: req.params.authorid})
+          Author.findOne({name: req.params.authorName})
           .then(author => {
             res.json(author);
           })

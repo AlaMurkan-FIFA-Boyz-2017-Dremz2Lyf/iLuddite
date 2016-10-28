@@ -205,12 +205,15 @@ class App extends React.Component {
     //we can pass this state down to our author bio component and render the info when user clicks on the author name.
     .then( (author) => {
       this.searchForAuthor(author)
-      var authorId = response.data._id
-      console.log('Author ID:', authorId)
-      return authorId
+      console.log('AUTHOR!: ', author)
+      var authorName = author
+      console.log('Author NAME:', authorName)
+      return authorName
     })
-    .then( (authorId) => {
-      axios.post(`/users/${this.state.loggedInUser.fbid}/${authorId}`)
+    //Need to add this to Make Current Book also
+
+    .then( (authorName) => {
+      axios.post(`/users/${this.state.loggedInUser.fbid}/authorInfo/${authorName}`)
         .then( response => {
           const newState = Object.assign({}, this.state.loggedInUser);
           newState.authorInfo = newState.authorInfo.concat(response.data);
