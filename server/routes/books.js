@@ -31,7 +31,6 @@ router.get('/search/:searchterm', (req, res) => {
       body = body.items.slice(0,5);
       let five = body.map(book => {
         //try to grab the properties we want, otherwise return null
-        // console.log('BOOK INFO!!: ', book)
         try {
           return {
             _id: book.id,
