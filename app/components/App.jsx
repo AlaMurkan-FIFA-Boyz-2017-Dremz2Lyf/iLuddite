@@ -29,10 +29,41 @@ class App extends React.Component {
         .then((response) => {
           this.setState({
             loggedInUser: response.data
-          });
+          }); 
+          console.log('State of the APP:', this.state)
           const path = `/users/${this.state.loggedInUser.fbid}`;
           browserHistory.push(path);
-        });
+        })
+        .then( () => {
+          console.log("STATE!!!!", this.state.loggedInUser)
+           var authors = this.state.loggedInUser.queue.map(function(books) {
+            // console.log("BOOKES?", books)
+            return books
+          })
+            var arrOfAuthors = authors.map( index => { 
+              console.log('INDEX: ', index)
+              return axios.get(`/authors/${index.author}`)
+            })
+            var arrOfAuthorInfo =[];
+              arrOfAuthors.forEach( promiseObj => {
+                promiseObj.then(authorData => {
+                  arrOfAuthorInfo.push(authorData);
+                console.log("Promise obj DATA", authorData)
+                this.setState({
+                
+                  authorInfo: 
+                })
+                console.log('AUTHOR INFO: ', this.state)
+
+              })
+            })  
+        })
+    }
+  }    
+        //Need to grab all of the author info from the database and load into the state when the component mounts
+        //So that we can use it in our rendering of author info.
+
+
         //Here we will get all of the authors info by making a GET request to goodreads API using the author name
         //that I grabbed from the logged in users queue. //CHANGING TACTICS THIS IS INEFFICIENT TO RUN EVERYTIME THE PAGE LOADS
         //MAKE THE API CALL WHEN THE CLICK MAKE CURRENT OR ADD TO QUEUE AND STORE THE INFO IN THE DATABASE. THEN PASS THIS
@@ -63,9 +94,8 @@ class App extends React.Component {
         // .catch(function(err) {
         //   throw err
         // })
-      }
-  }
-
+                
+                
   render () {
     // this style is needed to make the app as tall as the screen
     const style = { height: '100vh' };
