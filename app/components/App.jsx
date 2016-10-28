@@ -34,32 +34,32 @@ class App extends React.Component {
           const path = `/users/${this.state.loggedInUser.fbid}`;
           browserHistory.push(path);
         })
-        .then( () => {
-          console.log("STATE!!!!", this.state.loggedInUser)
-           var authors = this.state.loggedInUser.queue.map(function(books) {
-            // console.log("BOOKES?", books)
-            return books
-          })
-            var arrOfAuthors = authors.map( index => { 
-              console.log('INDEX: ', index)
-              return axios.get(`/authors/${index.author}`)
-            })
-            var arrOfAuthorInfo =[];
-              arrOfAuthors.forEach( promiseObj => {
-                promiseObj.then(authorData => {
-                  arrOfAuthorInfo.push(authorData);
-                console.log("Promise obj DATA", authorData)
-                this.setState({
+        // .then( () => {
+        //   console.log("STATE!!!!", this.state.loggedInUser)
+        //    var authors = this.state.loggedInUser.queue.map(function(books) {
+        //     // console.log("BOOKES?", books)
+        //     return books
+        //   })
+        //     var arrOfAuthors = authors.map( index => { 
+        //       console.log('INDEX: ', index)
+        //       return axios.get(`/authors/${index.author}`)
+        //     })
+        //     var arrOfAuthorInfo =[];
+        //       arrOfAuthors.forEach( promiseObj => {
+        //         promiseObj.then(authorData => {
+        //           arrOfAuthorInfo.push(authorData);
+        //         console.log("Promise obj DATA", authorData)
+        //         this.setState({
                 
-                  authorInfo: 
-                })
-                console.log('AUTHOR INFO: ', this.state)
+        //           authorInfo: authorData
+        //         })
+        //         console.log('AUTHOR INFO: ', this.state)
 
-              })
-            })  
-        })
+        //       })
+        //     })  
+        // })
     }
-  }    
+  }
         //Need to grab all of the author info from the database and load into the state when the component mounts
         //So that we can use it in our rendering of author info.
 
@@ -205,10 +205,23 @@ class App extends React.Component {
     //we can pass this state down to our author bio component and render the info when user clicks on the author name.
     .then( (author) => {
       this.searchForAuthor(author)
+      var authorId = response.data._id
+      console.log('Author ID:', authorId)
+      return authorId
+    })
+    .then( (authorId) => {
+      axios.post(`/users/${this.state.loggedInUser.fbid}/${authorId}`)
+        .then( response => {
+          const newState = Object.assign({}, this.state.loggedInUser);
+          newState.authorInfo = newState.authorInfo.concat(response.data);
+          this.setState({
+            loggedInUser: newState
+          })
+        })
     })
       
-     
   }
+     
 
   addBookToFinished (isbn) {
         // check to see if book is already in user's finished list

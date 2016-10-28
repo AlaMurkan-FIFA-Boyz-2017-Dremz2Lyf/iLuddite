@@ -12,7 +12,8 @@ class UserProfile extends React.Component {
     this.state = {
       user: {
         queue: [],
-        finished: []
+        finished: [],
+        authorInfo: []
 
       }
     };
