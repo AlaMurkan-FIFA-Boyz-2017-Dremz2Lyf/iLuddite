@@ -1,4 +1,4 @@
-StarRatings.jsximport React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
 class StarRatingComponent extends Component {
