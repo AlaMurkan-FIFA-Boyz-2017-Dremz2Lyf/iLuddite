@@ -9,6 +9,7 @@ const usersSchema = new Schema({
   queue: [{ type: Schema.Types.String, ref: 'Books' }],
   favorites: [{ type: Schema.Types.String, ref: 'Books' }],
   finished: [{ type: Schema.Types.String, ref: 'Books' }], //Added this to implement finished books feature
+  authorInfo: [{ type:Schema.Types.String, ref: 'Authors' }], //Added to store author info in state to implement author info feature
   location: String,
   stats: Number,
   created_at: { type: Date, default: Date.now }

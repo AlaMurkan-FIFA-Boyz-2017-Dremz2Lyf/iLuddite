@@ -199,6 +199,49 @@ router.route('/:userid/finished/:bookid') //Adding this to create finished books
     })
   })
 
+//ADDED THIS !
+router.route('/:userid/authorInfo') //Adding this to get author info in the user profile
+  // GET user authorInfo
+  .get((req, res, next) => {
+  User.findOne({
+    fbid: req.params.userid
+    }).then(found => {
+      if (found) {
+        Author.find()
+          .where('_id')
+          .in(found.authorInfo)
+          .then(found => {
+            res.send(found);
+          })
+      } else {
+        res.send('user and/or author info not found')
+      }
+    }).catch(error => {
+      throw error;
+    })
+  }) 
+
+router.route('/:userid/authorInfo/:authorid')
+  .post((req, res, next) => {
+  // POST to user's author info
+    User.findOneAndUpdate({ fbid: req.params.userid },
+      { $push: { finished: req.params.authorid } } )
+      .then(user => {
+        //send the author back, not the user
+        if (user) {
+          Author.findOne({_id: req.params.authorid})
+          .then(author => {
+            res.json(author);
+          })
+        } else {
+          res.send('user and/or author not found')
+        }
+    }).catch(error => {
+      throw error;
+      console.log('error:', error);
+    });
+  })     
+
 //update current book count
 router.post('/:userid/count', (req, res, next) => {
   User.findOneAndUpdate( { fbid: req.params.userid },

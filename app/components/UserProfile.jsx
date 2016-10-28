@@ -14,12 +14,13 @@ class UserProfile extends React.Component {
     this.state = {
       user: {
         queue: [],
-        finished: []
+        finished: [],
+        authorInfo: []
 
-      },
-      authorName: '', //Not using authorName currently. I was thinking I would need it to run my searchForAuthorFunction but I am getting author name from the queue instead
-      authorSearchResults: {},
-      hover: true
+      }
+      // authorName: '', //Not using authorName currently. I was thinking I would need it to run my searchForAuthorFunction but I am getting author name from the queue instead
+      // authorSearchResults: {},
+      // hover: true
     }
   }
 
@@ -116,19 +117,19 @@ class UserProfile extends React.Component {
       </div>
     );
 
-    } else {
-    return (
-      <div className="container">
-        <UserBox 
-          increaseBookCount={this.props.increaseBookCount}
-          user={this.state.user} />
-        <CurrentBook currentBook={this.state.user.queue[0]}/>
-        <ProfileQueue bookQueue={this.state.user.queue.slice(1)} indices={this.props.queueIndices} increaseQueueIndices={this.props.increaseQueueIndices} decreaseQueueIndices={this.props.decreaseQueueIndices}/>
-        <ProfileFinished finishedQueue={this.state.user.finished} indices={this.props.finishedIndices} increaseFinishedIndices={this.props.increaseFinishedIndices} decreaseFinishedIndices={this.props.decreaseFinishedIndices}/>
-        <DisplayFriends friendQueue={this.state.user.friends}/>
-        <AuthorBio authorSearchResults={this.state.authorSearchResults} /> 
-      </div>
-    );
+    // } else {
+    // return (
+    //   <div className="container">
+    //     <UserBox 
+    //       increaseBookCount={this.props.increaseBookCount}
+    //       user={this.state.user} />
+    //     <CurrentBook currentBook={this.state.user.queue[0]}/>
+    //     <ProfileQueue bookQueue={this.state.user.queue.slice(1)} />
+    //     <ProfileFinished finishedQueue={this.state.user.finished} />
+    //     <DisplayFriends friendQueue={this.state.user.friends}/>
+    //     <AuthorBio authorSearchResults={this.state.authorSearchResults} /> 
+    //   </div>
+    // );
   }
 }
 
