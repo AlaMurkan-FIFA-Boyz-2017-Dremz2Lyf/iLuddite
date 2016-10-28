@@ -57,6 +57,8 @@ router.get('/search/:author', (req, res) => {
   request(options, getAuthorInfo);
 })
 
+//Commented out this endpoint because I currently do not use it. Saved in case need it for later.
+
 //endpoint for retrieving author from db
 // router.get('/:authorId', (req, res, next) => {
 //   //find by name

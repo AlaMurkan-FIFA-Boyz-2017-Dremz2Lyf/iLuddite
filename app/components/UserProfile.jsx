@@ -16,10 +16,7 @@ class UserProfile extends React.Component {
         queue: [],
         finished: [],
         authorInfo: []
-
       }
-      // authorName: '', //Not using authorName currently. I was thinking I would need it to run my searchForAuthorFunction but I am getting author name from the queue instead
-      // authorSearchResults: {},
       // hover: true
     }
   }
@@ -32,6 +29,7 @@ class UserProfile extends React.Component {
           this.setState({
             user: response.data
           });
+          console.log("USER RESPONSE", response.data)
           console.log('STATE of USER: ', this.state.user)
         }))
         // .then(response => {
@@ -71,27 +69,6 @@ class UserProfile extends React.Component {
   }
 
 
-//Originally set this function to run onClick of the Author name on user profile(or onMouseOver in the future)
-//But this means it will only make that get request if they mouse over the author which means it will probably lag
-//pretty hard and be a bad user experience. Moved this get request up to componentDidMount so it will run once the page loads
-//Only issue is if they search a new book it doesn't seem to run the function again and so it would not work again until
-//They reloaded their profile page. Also, I need this author info in CurrentBook. Not sure if this is the best place to store
-//The state of the authorInfo. Seems like it would be best to have these prooperties in App so I could pass them down
-//to whatever component I wished. 
-  searchForAuthor () {
-    // console.log('CLICK!!')
-    // console.log("USER: ", this.state.user)
-    // console.log("AUTHOR: ",this.state.authorSearchResults)
-    // axios.get(`/authors/search/${this.state.user.queue[0].author}`)
-    //   .then(response => {
-    //     console.log("AUTHOR RESPONSE", response)
-    //     this.setState({
-    //       authorSearchResults: response.data,
-    //     })
-    //   console.log("CURRENT STATE OF AUTHOR:", this.state.authorSearchResults)
-    //   })
-  }
-
   handleMouseOver () {
     this.setState ({
       hover: false
@@ -111,7 +88,9 @@ class UserProfile extends React.Component {
           increaseBookCount={this.props.increaseBookCount}
           user={this.state.user} 
            />
-        <CurrentBook currentBook={this.state.user.queue[0]} searchAuthor={this.searchForAuthor.bind(this)}/>
+        <CurrentBook currentBook={this.state.user.queue[0]} 
+          // authorInfo={this.state.authorSearchResults} 
+          />
         <ProfileQueue bookQueue={this.state.user.queue.slice(1)}/>
         <DisplayFriends friendQueue={this.state.user.friends}/>
       </div>

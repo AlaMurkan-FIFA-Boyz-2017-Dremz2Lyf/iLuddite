@@ -34,6 +34,10 @@ class App extends React.Component {
           const path = `/users/${this.state.loggedInUser.fbid}`;
           browserHistory.push(path);
         })
+    }
+  }
+
+  //USED ALL THIS AT ONE POINT THEN REALIZED IT WAS NOT THE BEST APPROACH
         // .then( () => {
         //   console.log("STATE!!!!", this.state.loggedInUser)
         //    var authors = this.state.loggedInUser.queue.map(function(books) {
@@ -58,8 +62,6 @@ class App extends React.Component {
         //       })
         //     })  
         // })
-    }
-  }
         //Need to grab all of the author info from the database and load into the state when the component mounts
         //So that we can use it in our rendering of author info.
 
@@ -128,11 +130,10 @@ class App extends React.Component {
     });
   }
 
-  
-  //Try running the get request for author when this is triggerred. This would be useful if we wanted to show author bio on search for books 
-  //Will need a way to pass in the author name. 
-  //Don't think we want this feature at this time though. Focus on my main task.
-  //Trying to think of what would be the best way to run this with fewest API calls and not overfilling the DB
+//If I wanted to be able to create a get author info for when the user gets back search results when searching
+//for a book I would have to run my searchForAuthor and add author info to the database when they run the searchForBook
+//function below. I could then use my routes to add it to the loggedInUser object and pass the author props down to
+//componenets that need it.
 
   // uses the navbarSearchText to do an api call and search for a book.
   searchForBook () {
@@ -145,17 +146,9 @@ class App extends React.Component {
       });
   }
 
-  //Keeping this for now. Thinking I want to just get the author info when a new book is searched and added to the queue
-  //so that it will save it to the database at that point. Then when hovering or clicking on author name it will draw
-  //all the info it needs from the database as opposed to making a whole new get request to the goodreads API
+  //When I have time create a helper function for the search for author steps I added to 
+  //"add to queue" and "make my current"
   searchForAuthor (author) {
-    axios.get(`/authors/search/${author}`)
-      .then(response => {
-        this.setState({
-          authorInfo: response
-        })
-        console.log('author state:', this.state.authorInfo)
-      })
   }
 
   // this function is used in several places throughout the app to dismiss
@@ -198,22 +191,16 @@ class App extends React.Component {
         loggedInUser: newState
       })
       var author = response.data.author;
-      return author
+      return author;
     })
     //Then we run the searchForAuthor function that will send an API request to goodreads with the author name
     //then insert the author info into the author database. This will also add this author to the state in authorInfo
     //we can pass this state down to our author bio component and render the info when user clicks on the author name.
     .then( (author) => {
-      this.searchForAuthor(author)
-      console.log('AUTHOR!: ', author)
-      var authorName = author
-      console.log('Author NAME:', authorName)
-      return authorName
+      return axios.get(`/authors/search/${author}`)
     })
-    //Need to add this to Make Current Book also
-
-    .then( (authorName) => {
-      axios.post(`/users/${this.state.loggedInUser.fbid}/authorInfo/${authorName}`)
+    .then( (response) => {
+      axios.post(`/users/${this.state.loggedInUser.fbid}/authorInfo/${response.data._id}`)
         .then( response => {
           const newState = Object.assign({}, this.state.loggedInUser);
           newState.authorInfo = newState.authorInfo.concat(response.data);
@@ -222,9 +209,7 @@ class App extends React.Component {
           })
         })
     })
-      
-  }
-     
+}
 
   addBookToFinished (isbn) {
         // check to see if book is already in user's finished list
@@ -306,11 +291,21 @@ removeBookFromFinished (isbn) {
       var author = book.author;
       return author;
     })
-    //Then we run the searchForAuthor function (similar to add to queue) that will send an API request to goodreads with the author name
+    //Then we run the same approach as add to queue that will send an API request to goodreads with the author name
     //then insert the author info into the author database. This will also add this author to the state in authorInfo
     //we can pass this state down to our author bio component and render the info when user clicks on the author name.
     .then( (author) => {
-      this.searchForAuthor(author)
+      return axios.get(`/authors/search/${author}`)
+    })
+    .then( (response) => {
+      axios.post(`/users/${this.state.loggedInUser.fbid}/authorInfo/${response.data._id}`)
+        .then( response => {
+          const newState = Object.assign({}, this.state.loggedInUser);
+          newState.authorInfo = newState.authorInfo.concat(response.data);
+          this.setState({
+            loggedInUser: newState
+          })
+        })
     })
   }
 

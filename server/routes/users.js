@@ -200,7 +200,7 @@ router.route('/:userid/finished/:bookid') //Adding this to create finished books
   })
 
 //ADDED THIS !
-router.route('/:userid/authorInfo') //Adding this to get author info in the user profile
+router.route('/:userid/authorInfo/:authorid') //Adding this to get author info in the user profile
   // GET user authorInfo
   .get((req, res, next) => {
   User.findOne({
@@ -221,15 +221,15 @@ router.route('/:userid/authorInfo') //Adding this to get author info in the user
     })
   }) 
 
-router.route('/:userid/authorInfo/:authorName')
+router.route('/:userid/authorInfo/:authorid')
   .post((req, res, next) => {
   // POST to user's author info
     User.findOneAndUpdate({ fbid: req.params.userid },
-      { $push: { authorInfo: req.params.authorName } } )
+      { $push: { authorInfo: req.params.authorid } } )
       .then(user => {
         //send the author back, not the user
         if (user) {
-          Author.findOne({name: req.params.authorName})
+          Author.findOne({_id: req.params.authorid})
           .then(author => {
             res.json(author);
           })
