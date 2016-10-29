@@ -399,3 +399,18 @@ nav span.glyphicon.glyphicon-search {
   height: 350px;
   width: 450px;
 }
+.authorImg {
+  height: auto;
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.author {
+  overflow: scroll;
+  padding: 15px;
+  box-shadow: inset 0px 0px 7px 1px rgba(56,56,56,0.85);
+  border-radius: 4px;
+  height: 350px;
+  width: 450px;
+}
