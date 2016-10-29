@@ -59,7 +59,7 @@ class Book extends React.Component {
             <h3>{this.state.book.author}</h3>
           </Link>
           <h4>About the Book</h4>
-          <p className="book-summary book">{this.state.book.summary}</p>
+          <p className="book-summary">{this.state.book.summary}</p>
           <br/>
           <Button
             bookid={this.state.book._id}

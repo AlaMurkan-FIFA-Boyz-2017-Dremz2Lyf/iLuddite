@@ -30,7 +30,6 @@ class App extends React.Component {
           this.setState({
             loggedInUser: response.data
           }); 
-          console.log('State of the APP:', this.state)
           const path = `/users/${this.state.loggedInUser.fbid}`;
           browserHistory.push(path);
         })
@@ -51,10 +50,7 @@ class App extends React.Component {
           addBookToQueue={this.addBookToQueue.bind(this)}
           makeCurrentBook={this.makeCurrentBook.bind(this)}
         />
-        <div
-          className="container"
-
-        >
+        <div className="container">
           {this.renderChildrenWithProps()}
         </div>
       </div>
@@ -69,11 +65,6 @@ class App extends React.Component {
     });
   }
 
-//If I wanted to be able to create a get author info for when the user gets back search results when searching
-//for a book I would have to run my searchForAuthor and add author info to the database when they run the searchForBook
-//function below. I could then use my routes to add it to the loggedInUser object and pass the author props down to
-//componenets that need it.
-
   // uses the navbarSearchText to do an api call and search for a book.
   searchForBook () {
     axios.get(`/books/search/${this.state.navbarSearchText}`)
@@ -81,7 +72,6 @@ class App extends React.Component {
         this.setState({
           navbarSearchResults: response.data
         })
-        console.log("Search Results: ", response.data)
       });
   }
 
@@ -141,7 +131,6 @@ class App extends React.Component {
     .then( (response) => {
       var testObj = {}
       var test = this.state.loggedInUser.authorInfo.map(bio => {
-      console.log("BIO:", bio)
         testObj.authorId = bio._id
           return test;
       })
@@ -247,7 +236,6 @@ removeBookFromFinished (isbn) {
     .then( (response) => {
       var testObj = {}
       var test = this.state.loggedInUser.authorInfo.map(bio => {
-      console.log("BIO:", bio)
         testObj.authorId = bio._id
           return test;
       })
