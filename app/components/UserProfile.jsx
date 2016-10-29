@@ -17,7 +17,6 @@ class UserProfile extends React.Component {
         finished: [],
         authorInfo: []
       }
-      // hover: true
     }
   }
 
@@ -29,19 +28,7 @@ class UserProfile extends React.Component {
           this.setState({
             user: response.data
           });
-          console.log("USER RESPONSE", response.data)
-          console.log('STATE of USER: ', this.state.user)
         }))
-        // .then(response => {
-        //   return axios.get(`/authors/search/${this.state.user.queue[0].author}`)
-        //   .then(response => {
-        //     // console.log("AUTHOR RESPONSE", response)
-        //     this.setState({
-        //       authorSearchResults: response.data,
-        //     })
-        //   // console.log("CURRENT STATE OF AUTHOR:", this.state.authorSearchResults)
-        //   })
-        // }) 
     }
   }
 
@@ -56,16 +43,6 @@ class UserProfile extends React.Component {
           user: response.data
         });
       })
-      // .then(response => {
-      //     return axios.get(`/authors/search/${this.state.user.queue[0].author}`)
-      //     .then(response => {
-      //       console.log("Author Reload", response)
-      //       this.setState({
-      //         authorSearchResults: response.data,
-      //       })
-      //     console.log("StateofAuthor Reload:", this.state.authorSearchResults)
-      //     })
-      // }) 
   }
 
 

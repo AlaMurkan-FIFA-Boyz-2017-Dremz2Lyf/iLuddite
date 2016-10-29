@@ -1,5 +1,4 @@
 const React = require('react');
-const AuthorBio = require('./AuthorBio');
 import { Link } from 'react-router';
 
 const CurrentBook = (props) => {
@@ -53,4 +52,3 @@ CurrentBook.defaultProps = {
 }
 
 module.exports = CurrentBook;
-                    // <AuthorBio currentAuthor={props.currentBook} authorArr={props.authorArr} />
