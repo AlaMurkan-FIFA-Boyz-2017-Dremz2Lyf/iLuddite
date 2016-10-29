@@ -36,67 +36,6 @@ class App extends React.Component {
         })
     }
   }
-
-  //USED ALL THIS AT ONE POINT THEN REALIZED IT WAS NOT THE BEST APPROACH
-        // .then( () => {
-        //   console.log("STATE!!!!", this.state.loggedInUser)
-        //    var authors = this.state.loggedInUser.queue.map(function(books) {
-        //     // console.log("BOOKES?", books)
-        //     return books
-        //   })
-        //     var arrOfAuthors = authors.map( index => { 
-        //       console.log('INDEX: ', index)
-        //       return axios.get(`/authors/${index.author}`)
-        //     })
-        //     var arrOfAuthorInfo =[];
-        //       arrOfAuthors.forEach( promiseObj => {
-        //         promiseObj.then(authorData => {
-        //           arrOfAuthorInfo.push(authorData);
-        //         console.log("Promise obj DATA", authorData)
-        //         this.setState({
-                
-        //           authorInfo: authorData
-        //         })
-        //         console.log('AUTHOR INFO: ', this.state)
-
-        //       })
-        //     })  
-        // })
-        //Need to grab all of the author info from the database and load into the state when the component mounts
-        //So that we can use it in our rendering of author info.
-
-
-        //Here we will get all of the authors info by making a GET request to goodreads API using the author name
-        //that I grabbed from the logged in users queue. //CHANGING TACTICS THIS IS INEFFICIENT TO RUN EVERYTIME THE PAGE LOADS
-        //MAKE THE API CALL WHEN THE CLICK MAKE CURRENT OR ADD TO QUEUE AND STORE THE INFO IN THE DATABASE. THEN PASS THIS
-        //INFO I GET BACK FROM THE DATABASE DOWN TO MY COMPONENT.
-        // .then(function() {
-        //   console.log("STATE!!!!", self.state.loggedInUser)
-        //    var authors = self.state.loggedInUser.queue.map(function(books) {
-        //     // console.log("BOOKES?", books)
-        //     return books
-        //   })
-        //     var arrOfAuthors = authors.map(function(index) { 
-        //       return axios.get(`/authors/search/${index.author}`)
-        //     })
-        //     arrOfAuthors.forEach(function(promiseObj) {
-        //       promiseObj.then(data => {
-        //         console.log("Promise obj DATA", data)
-        //         self.setState({
-        //           authorInfo: data
-        //         })
-        //       console.log("AUTHOR STATE???", self.state.authorInfo)
-        //       })
-        //     })
-        //     // .then(response => {
-        //     // console.log("AUTHOR RESPONSE", response)
-        //     // console.log("CURRENT STATE OF AUTHOR:", self.state.authorInfo)
-        //     // })
-        // })
-        // .catch(function(err) {
-        //   throw err
-        // })
-                
                 
   render () {
     // this style is needed to make the app as tall as the screen
@@ -200,14 +139,22 @@ class App extends React.Component {
       return axios.get(`/authors/search/${author}`)
     })
     .then( (response) => {
-      axios.post(`/users/${this.state.loggedInUser.fbid}/authorInfo/${response.data._id}`)
-        .then( response => {
-          const newState = Object.assign({}, this.state.loggedInUser);
-          newState.authorInfo = newState.authorInfo.concat(response.data);
-          this.setState({
+      var testObj = {}
+      var test = this.state.loggedInUser.authorInfo.map(bio => {
+      console.log("BIO:", bio)
+        testObj.authorId = bio._id
+          return test;
+      })
+        if(testObj.authorId !== response.data._id) {
+          axios.post(`/users/${this.state.loggedInUser.fbid}/authorInfo/${response.data._id}`)
+          .then( response => {
+            const newState = Object.assign({}, this.state.loggedInUser);
+            newState.authorInfo = newState.authorInfo.concat(response.data);
+            this.setState({
             loggedInUser: newState
+            })
           })
-        })
+        }
     })
 }
 
@@ -298,14 +245,22 @@ removeBookFromFinished (isbn) {
       return axios.get(`/authors/search/${author}`)
     })
     .then( (response) => {
-      axios.post(`/users/${this.state.loggedInUser.fbid}/authorInfo/${response.data._id}`)
-        .then( response => {
-          const newState = Object.assign({}, this.state.loggedInUser);
-          newState.authorInfo = newState.authorInfo.concat(response.data);
-          this.setState({
+      var testObj = {}
+      var test = this.state.loggedInUser.authorInfo.map(bio => {
+      console.log("BIO:", bio)
+        testObj.authorId = bio._id
+          return test;
+      })
+        if(testObj.authorId !== response.data._id) {
+          axios.post(`/users/${this.state.loggedInUser.fbid}/authorInfo/${response.data._id}`)
+          .then( response => {
+            const newState = Object.assign({}, this.state.loggedInUser);
+            newState.authorInfo = newState.authorInfo.concat(response.data);
+            this.setState({
             loggedInUser: newState
+            })
           })
-        })
+        }
     })
   }
 
@@ -444,6 +399,10 @@ removeBookFromFinished (isbn) {
             decreaseQueueIndices: this.decreaseQueueIndices.bind(this)
           });
           break;
+        case "AuthorDeets" :
+          return React.cloneElement(child, {
+            loggedInUser: this.state.loggedInUser
+          })  
         default :
           return child;
       }

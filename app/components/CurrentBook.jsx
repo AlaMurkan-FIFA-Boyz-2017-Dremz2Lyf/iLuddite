@@ -1,4 +1,5 @@
 const React = require('react');
+const AuthorBio = require('./AuthorBio');
 import { Link } from 'react-router';
 
 const CurrentBook = (props) => {
@@ -24,9 +25,11 @@ const CurrentBook = (props) => {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-xs-12 currentAuthor" onClick={props.searchAuthor} >
-                   
+                  <div className="col-xs-12 currentAuthor">
+                    <Link to={`/authors/${props.currentAuthor}`} >
                     {props.currentBook.author}
+                    </Link>
+                   
                   </div>
                 </div>
                 <div className="row">
@@ -50,3 +53,4 @@ CurrentBook.defaultProps = {
 }
 
 module.exports = CurrentBook;
+                    // <AuthorBio currentAuthor={props.currentBook} authorArr={props.authorArr} />
