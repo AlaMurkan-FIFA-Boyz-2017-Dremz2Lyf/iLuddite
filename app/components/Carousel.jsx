@@ -1,5 +1,5 @@
 const React = require('react'); //Put this in ProfileQueue?
-const Slider = require('react-slick');
+
 
 class Carousel extends React.Component {
   constructor (props) {

@@ -5,7 +5,7 @@ const UserBox = require('./UserBox');
 const CurrentBook = require('./CurrentBook');
 const DisplayFriends = require('./DisplayFriends');
 const Carousel = require('./Carousel')
-const AuthorBio = require('./AuthorBio'); // require AuthorBio so I can pass the current book in the queue down as props
+// require AuthorBio so I can pass the current book in the queue down as props
 const axios = require('../axios');
 
 class UserProfile extends React.Component {
@@ -81,34 +81,18 @@ class UserProfile extends React.Component {
 
   render () {
 
-    // if(this.state.hover) {
     return (
       <div className="container">
-        <UserBox
+        <UserBox 
           increaseBookCount={this.props.increaseBookCount}
-          user={this.state.user} 
-           />
-        <CurrentBook currentBook={this.state.user.queue[0]} 
-          // authorInfo={this.state.authorSearchResults} 
-          />
-        <ProfileQueue bookQueue={this.state.user.queue.slice(1)}/>
+          user={this.state.user} />
+        <CurrentBook currentBook={this.state.user.queue[0]} authorArr={this.state.user.authorInfo} />
+        <ProfileQueue bookQueue={this.state.user.queue.slice(1)} indices={this.props.queueIndices} increaseQueueIndices={this.props.increaseQueueIndices} decreaseQueueIndices={this.props.decreaseQueueIndices} />
+        <ProfileFinished finishedQueue={this.state.user.finished} 
+           indices={this.props.finishedIndices} increaseFinishedIndices={this.props.increaseFinishedIndices} decreaseFinishedIndices={this.props.decreaseFinishedIndices}/>
         <DisplayFriends friendQueue={this.state.user.friends}/>
       </div>
     );
-
-    // } else {
-    // return (
-    //   <div className="container">
-    //     <UserBox 
-    //       increaseBookCount={this.props.increaseBookCount}
-    //       user={this.state.user} />
-    //     <CurrentBook currentBook={this.state.user.queue[0]}/>
-    //     <ProfileQueue bookQueue={this.state.user.queue.slice(1)} />
-    //     <ProfileFinished finishedQueue={this.state.user.finished} />
-    //     <DisplayFriends friendQueue={this.state.user.friends}/>
-    //     <AuthorBio authorSearchResults={this.state.authorSearchResults} /> 
-    //   </div>
-    // );
   }
 }
 

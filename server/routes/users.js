@@ -224,6 +224,10 @@ router.route('/:userid/authorInfo/:authorid') //Adding this to get author info i
 router.route('/:userid/authorInfo/:authorid')
   .post((req, res, next) => {
   // POST to user's author info
+  // console.log('THE PORST REQUEST', req)
+// if (req.params.authorid === 'true') {
+//   return;
+// } else {
     User.findOneAndUpdate({ fbid: req.params.userid },
       { $push: { authorInfo: req.params.authorid } } )
       .then(user => {
@@ -240,6 +244,7 @@ router.route('/:userid/authorInfo/:authorid')
       throw error;
       console.log('error:', error);
     });
+  // }  
   })     
 
 //update current book count
