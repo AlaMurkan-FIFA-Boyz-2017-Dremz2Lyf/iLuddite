@@ -55,7 +55,9 @@ class Book extends React.Component {
         <div className="col-sm-1"></div>
         <div className="bookCol2 col-sm-6">
           <h2>{this.state.book.title}</h2>
-          <h3>{this.state.book.author}</h3>
+          <Link to={`/authors/${this.state.book.author}`} >
+            <h3>{this.state.book.author}</h3>
+          </Link>
           <h4>About the Book</h4>
           <p className="book-summary">{this.state.book.summary}</p>
           <br/>

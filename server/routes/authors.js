@@ -8,6 +8,7 @@ const request = require('request');
 const xml = require('xml2js').parseString;
 
 router.get('/search/:author', (req, res) => {
+  console.log("AUTHOR SEARCH:", req.params)
   let authorSearched = req.params.author;
   let options = {
     url: `https://www.goodreads.com/api/author_url/${authorSearched}?key=${process.env.goodreads}`
@@ -56,10 +57,25 @@ router.get('/search/:author', (req, res) => {
   request(options, getAuthorInfo);
 })
 
+//Commented out this endpoint because I currently do not use it. Saved in case need it for later.
+
 //endpoint for retrieving author from db
-router.get('/:authorId', (req, res, next) => {
+// router.get('/:authorId', (req, res, next) => {
+//   //find by name
+//   Author.findOne({_id: req.params.authorId}, (err, author) => {
+//     if (err) {
+//       console.log(`Error in finding author: ${err}`);
+//       res.send(err);
+//     } else {
+//       console.log(`Author found: ${author}`);
+//       res.send(author);
+//     }
+//   })
+// })
+
+router.get('/:authorname', (req, res, next) => {
   //find by name
-  Author.findOne({_id: req.params.authorId}, (err, author) => {
+  Author.findOne({name: req.params.authorname}, (err, author) => {
     if (err) {
       console.log(`Error in finding author: ${err}`);
       res.send(err);

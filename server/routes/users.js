@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/users');
 const Book = require('../models/books');
+const Author = require('../models/authors');
 const profile = require('../services/profile');
 
 router.get('/:userid', (req, res, next) => {
@@ -197,6 +198,54 @@ router.route('/:userid/finished/:bookid') //Adding this to create finished books
       throw error;
     })
   })
+
+//ADDED THIS !
+router.route('/:userid/authorInfo/:authorid') //Adding this to get author info in the user profile
+  // GET user authorInfo
+  .get((req, res, next) => {
+  User.findOne({
+    fbid: req.params.userid
+    }).then(found => {
+      if (found) {
+        Author.find()
+          .where('_id')
+          .in(found.authorInfo)
+          .then(found => {
+            res.send(found);
+          })
+      } else {
+        res.send('user and/or author info not found')
+      }
+    }).catch(error => {
+      throw error;
+    })
+  }) 
+
+router.route('/:userid/authorInfo/:authorid')
+  .post((req, res, next) => {
+  // POST to user's author info
+  // console.log('THE PORST REQUEST', req)
+// if (req.params.authorid === 'true') {
+//   return;
+// } else {
+    User.findOneAndUpdate({ fbid: req.params.userid },
+      { $push: { authorInfo: req.params.authorid } } )
+      .then(user => {
+        //send the author back, not the user
+        if (user) {
+          Author.findOne({_id: req.params.authorid})
+          .then(author => {
+            res.json(author);
+          })
+        } else {
+          res.send('user and/or author not found')
+        }
+    }).catch(error => {
+      throw error;
+      console.log('error:', error);
+    });
+  // }  
+  })     
 
 //update current book count
 router.post('/:userid/count', (req, res, next) => {

@@ -25,7 +25,10 @@ const CurrentBook = (props) => {
                 </div>
                 <div className="row">
                   <div className="col-xs-12 currentAuthor">
+                    <Link to={`/authors/${props.currentAuthor}`} >
                     {props.currentBook.author}
+                    </Link>
+                   
                   </div>
                 </div>
                 <div className="row">

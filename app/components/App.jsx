@@ -29,13 +29,13 @@ class App extends React.Component {
         .then((response) => {
           this.setState({
             loggedInUser: response.data
-          });
+          }); 
           const path = `/users/${this.state.loggedInUser.fbid}`;
           browserHistory.push(path);
-        });
+        })
     }
   }
-
+                
   render () {
     // this style is needed to make the app as tall as the screen
     const style = { height: '100vh' };
@@ -50,10 +50,7 @@ class App extends React.Component {
           addBookToQueue={this.addBookToQueue.bind(this)}
           makeCurrentBook={this.makeCurrentBook.bind(this)}
         />
-        <div
-          className="container"
-
-        >
+        <div className="container">
           {this.renderChildrenWithProps()}
         </div>
       </div>
@@ -76,6 +73,11 @@ class App extends React.Component {
           navbarSearchResults: response.data
         })
       });
+  }
+
+  //When I have time create a helper function for the search for author steps I added to 
+  //"add to queue" and "make my current"
+  searchForAuthor (author) {
   }
 
   // this function is used in several places throughout the app to dismiss
@@ -117,8 +119,33 @@ class App extends React.Component {
       this.setState({
         loggedInUser: newState
       })
+      var author = response.data.author;
+      return author;
     })
-  }
+    //Then we run the searchForAuthor function that will send an API request to goodreads with the author name
+    //then insert the author info into the author database. This will also add this author to the state in authorInfo
+    //we can pass this state down to our author bio component and render the info when user clicks on the author name.
+    .then( (author) => {
+      return axios.get(`/authors/search/${author}`)
+    })
+    .then( (response) => {
+      var testObj = {}
+      var test = this.state.loggedInUser.authorInfo.map(bio => {
+        testObj.authorId = bio._id
+          return test;
+      })
+        if(testObj.authorId !== response.data._id) {
+          axios.post(`/users/${this.state.loggedInUser.fbid}/authorInfo/${response.data._id}`)
+          .then( response => {
+            const newState = Object.assign({}, this.state.loggedInUser);
+            newState.authorInfo = newState.authorInfo.concat(response.data);
+            this.setState({
+            loggedInUser: newState
+            })
+          })
+        }
+    })
+}
 
   addBookToFinished (isbn) {
         // check to see if book is already in user's finished list
@@ -197,6 +224,31 @@ removeBookFromFinished (isbn) {
       this.setState({
         loggedInUser: newState
       })
+      var author = book.author;
+      return author;
+    })
+    //Then we run the same approach as add to queue that will send an API request to goodreads with the author name
+    //then insert the author info into the author database. This will also add this author to the state in authorInfo
+    //we can pass this state down to our author bio component and render the info when user clicks on the author name.
+    .then( (author) => {
+      return axios.get(`/authors/search/${author}`)
+    })
+    .then( (response) => {
+      var testObj = {}
+      var test = this.state.loggedInUser.authorInfo.map(bio => {
+        testObj.authorId = bio._id
+          return test;
+      })
+        if(testObj.authorId !== response.data._id) {
+          axios.post(`/users/${this.state.loggedInUser.fbid}/authorInfo/${response.data._id}`)
+          .then( response => {
+            const newState = Object.assign({}, this.state.loggedInUser);
+            newState.authorInfo = newState.authorInfo.concat(response.data);
+            this.setState({
+            loggedInUser: newState
+            })
+          })
+        }
     })
   }
 
@@ -335,6 +387,10 @@ removeBookFromFinished (isbn) {
             decreaseQueueIndices: this.decreaseQueueIndices.bind(this)
           });
           break;
+        case "AuthorDeets" :
+          return React.cloneElement(child, {
+            loggedInUser: this.state.loggedInUser
+          })  
         default :
           return child;
       }
