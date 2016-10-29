@@ -2,31 +2,37 @@ const React = require('react');
 
 const UserBox = (props) => {
   return (
-    <div className="col-sm-6 profileColumn">
-      <div className="row">
-        <div className="col-xs-7 profilePhotoColumn">
-          <img src={props.user.image} className="img-responsive profilePhoto"/>
+    <div className="col-sm-5 profileColumn">
+      <div className="row fabio">
+        <div className="row">
+          <div className="col-xs-5"></div>
+          <div className="col-xs-7 profilePhotoColumn">
+            <img src={props.user.image} className="img-responsive profilePhoto"/>
+          </div>
         </div>
-        <div className="col-xs-5 userInfoColumnn">
-          <div className="row">
-            <div className="col-xs-12 userName">
-              {props.user.displayName}
+        <div className="row">
+          <div className="col-xs-12 userInfoColumnn">
+          <div className="col-xs-1"></div>
+            <div className="row">
+              <div className="col-xs-6 userName">
+                {props.user.displayName}
+              </div>
+              <div className="col-xs-4 userBooksRead">
+                <br></br>
+                <div className="bookCountTitle"> Book Count</div>
+                {props.user.stats}
+              </div>
+              <div className="col-xs-2"></div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-xs-12 userLocation">
-               {props.user.location}
+            <div className="row">
+              <div className="col-xs-5"></div>
+              <div className="col-xs-7 userLocation">
+                 {props.user.location}
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-xs-12 userBooksRead">
-              <br></br>
-              <div className="bookCountTitle"> Book Count</div>
-              {props.user.stats}
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-xs-12 incrementBookCount">
+            <div className="row">
+              <div className="col-xs-12 incrementBookCount">
+              </div>
             </div>
           </div>
         </div>
@@ -42,6 +48,6 @@ UserBox.defaultProps = {
     location: 'Mars w/ Elon Musk',
     stats: 'ate 43 martians'
   }
-}
+};
 
 module.exports = UserBox;

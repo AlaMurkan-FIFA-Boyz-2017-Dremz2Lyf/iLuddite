@@ -65,7 +65,8 @@ nav h2 {
   padding-left: 8px;
   padding-top: 10px;
   font-size: 26px;
-  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	font-family: 'Dancing Script', cursive;
+	color: #800080;
 }
 
 nav ul {
@@ -151,6 +152,8 @@ nav span.glyphicon.glyphicon-search {
 
 .currentColumn {
   padding: 1.2em 0;
+	border-radius: 10px;
+	box-shadow: 0px 0px 2px 8px rgba(128,0,128,0.75);
 }
 
 .currentPhotoColumn img {
@@ -161,31 +164,37 @@ nav span.glyphicon.glyphicon-search {
   opacity: 0.5;
 }
 
-.currentInfoColumnn {
+.bookPhoto {
+	padding-left: 5px;
+}
 
+.currentInfoColumnn {
+	padding-right: 15px;
 }
 
 .currentHeader {
   font-size:2em;
   padding-bottom: .5em;
-  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	font-family: 'Dancing Script', cursive;
+	padding-left: 5px;
+	margin-left: 15px;
 }
 
 .currentTitle {
   font-size: 1.3em;
-  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	font-family: 'Dancing Script', cursive;
 }
 
 .currentAuthor {
   font-size: 1.1em;
   font-weight: 300;
   margin-bottom: 1.1em;
-  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	font-family: 'Dancing Script', cursive;
 }
 
 .currentBio {
   font-size: .9em;
-  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	font-family: 'Dancing Script', cursive;
 }
 
 
@@ -224,34 +233,42 @@ nav span.glyphicon.glyphicon-search {
 }
 
 .userInfoColumnn {
-  padding: 10em 0 8em .5em;
+  /*padding: 10em 0 8em .5em;*/
 }
 
 .userName {
+	color: #800080;
   font-size: 1.6em;
   font-weight: 600;
-  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	font-family: 'Romanesco', cursive;
+	text-shadow: 2px 2px 5px white;
 }
 
 .userLocation {
+	color: #800080;
   font-size: 1.2em;
-  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;  
+	font-family: 'Romanesco', cursive;
+	text-shadow: 2px 2px 5px white;
 }
 
 .userBooksRead {
-  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	color: #800080;
+	font-family: 'Romanesco', cursive;
+	text-shadow: 2px 2px 5px white;
 }
 
 .readingRow {
   height: 250px;
+	box-shadow: inset 0px 0px 5px 5px rgba(128,0,128,0.4);
 }
 
 .readingHeader,
 .friendsHeader {
+	text-shadow: 1px 1px 5px #800080;
   text-align: center;
   font-size: 2em;
   padding: 1.4em 0 .5em 0;
-  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	font-family: 'Dancing Script', cursive;
 }
 
 .readingColumn {
@@ -297,6 +314,8 @@ nav span.glyphicon.glyphicon-search {
 .friendsRow {
   height: 240px;
   padding: 0 2em 0 2em;
+	background-image: url(../asset/bookRowHeader.jpg);
+	background-size: cover; 
 }
 
 .friendsColumn {
@@ -356,4 +375,10 @@ nav span.glyphicon.glyphicon-search {
 	box-shadow: inset 0px 0px 7px 1px rgba(56,56,56,0.85);
 	border-radius: 4px;
 
+}
+
+.fabio {
+	background-image: url(../assets/croppedFabio.jpg);
+	background-size: cover;
+	height: 400px;
 }
